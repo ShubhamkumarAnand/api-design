@@ -9,6 +9,7 @@ export const hashPassword = (password) => {
   return bcrypt.hash(password, 5)
 }
 
+// ! how does this jwt works under the hood
 export const createJWT = (user) => {
   const token = jwt.sign(
     {
@@ -40,9 +41,9 @@ export const protect = (req, res, next) => {
     req.user = user
     next()
   } catch (error) {
-    console.log(error)
     res.status(401)
     res.json({ message: 'User not identified' })
+    throw new error('something went wrong', error)
     return
   }
 }

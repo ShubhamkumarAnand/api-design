@@ -1,41 +1,35 @@
 import express from 'express'
-import router from './routes'
 import morgan from 'morgan'
 import cors from 'cors'
+
+import router from './routes'
 import { protect } from './modules/auth'
 import { createNewUser, signIN } from './handlers/user'
 
+// Creating an instance of express app
 const app = express()
 
-// By default it allows all the route to have access
+// By default it allows all external agents to have access to the api
 app.use(cors())
 
-// Logging the request
+// Logging the request into the terminal
 app.use(morgan('dev'))
 
-// Allows the user to send json
+// parses incoming requests with JSON payloads
 app.use(express.json())
 
-/**
- *  Allows the url query string to be parsed into object for the consuming
- *  google.com/page?auth=true?page=10 -> parsed into object available for the route
- */
-
-app.use(express.urlencoded({ extends: true }))
-
-// custom middleware
-app.use((req, res, next) => {
-  req.shh_secret = 'bunny'
-  next()
-})
+// Allows the url query string to be parsed into object for the consuming
+// google.com/page?auth=true?page=10 -> parsed into object available for the route
+app.use(express.urlencoded({ extended: true }))
 
 // Express will intercept only the route and function available above
 
 app.get('/', (req, res) => {
   res.status(200)
-  res.json({ message: 'hello server' })
+  res.json({ message: 'Welcome to Node!' })
 })
 
+// Protected routes
 app.use('/api', protect, router)
 
 // Authorization

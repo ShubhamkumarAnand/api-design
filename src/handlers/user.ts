@@ -21,7 +21,7 @@ export const signIN = async (req, res) => {
   })
 
   const isValid = await comparePassword(req.body.password, user.password)
-  if (!user || !isValid) {
+  if (!isValid) {
     res.status(401)
     res.json({ message: 'Not valid Username' })
     return
