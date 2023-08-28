@@ -24,9 +24,12 @@ app.use(express.urlencoded({ extended: true }))
 
 // Express will intercept only the route and function available above
 
-app.get('/', (req, res) => {
-  res.status(200)
-  res.json({ message: 'Welcome to Node!' })
+app.get('/', (req, res, next) => {
+  // res.status(200)
+  // res.json({ message: 'Welcome to Node!' })
+  setTimeout(() => {
+    next(new Error('Messed Up'))
+  }, 10)
 })
 
 // Protected routes
@@ -36,4 +39,9 @@ app.use('/api', protect, router)
 app.post('/sign-up', createNewUser)
 app.post('/sign-in', signIN)
 
+// Error
+app.use((err, req, res, next) => {
+  res.json({ message: `OOPs! 🤭 ${err.message}` })
+  next()
+})
 export default app
