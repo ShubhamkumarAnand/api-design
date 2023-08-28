@@ -8,6 +8,13 @@ import {
   getProducts,
   updateProduct,
 } from './handlers/product'
+import {
+  createUpdate,
+  deleteUpdate,
+  getAllUpdates,
+  getOneUpdate,
+  updateOneUpdate,
+} from './handlers/update'
 
 const router = Router()
 
@@ -29,25 +36,26 @@ router.put(
 router.delete('/product/:id', deleteProduct)
 
 // Update Route
-router.get('/update', () => {})
-router.get('/update/:id', () => {})
+router.get('/update', getAllUpdates)
+router.get('/update/:id', getOneUpdate)
 router.post(
   '/update',
   body('title').exists().isString(),
   body('body').exists().isString(),
-  () => {}
+  body('productId').exists().isString(),
+  createUpdate
 )
-
 router.put(
   '/update/:id',
   body('title').optional(),
   body('body').optional(),
-  body('status').isIn(['IN_PROGRESS', 'LIVE', 'DEPRECATED', 'ARCHIVED']),
+  body('status')
+    .isIn(['IN_PROGRESS', 'LIVE', 'DEPRECATED', 'ARCHIVED'])
+    .optional(),
   body('version').optional(),
-  () => {}
+  updateOneUpdate
 )
-
-router.delete('/update/:id', () => {})
+router.delete('/update/:id', deleteUpdate)
 
 // Update Point Route
 router.get('/update-point', () => {})
