@@ -1,5 +1,6 @@
 import app from './server'
 import * as dotenv from 'dotenv'
+import config from './config'
 
 dotenv.config()
 
@@ -13,4 +14,6 @@ process.on('unhandledRejection', () => {
 })
 
 // Starting a server on a port
-app.listen(3000)
+app.listen(config.port, () => {
+  console.log(`Server is listening on : http://localhost:${config.port}`)
+})
